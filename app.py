@@ -3,11 +3,11 @@ import streamlit as st
 def calculate_gtt_prices(current_price):
     """
     Calculate GTT buy/sell trigger prices based on Zerodha rules:
-    - If price >= 50, min trigger distance = 0.25% of price
+    - If price >= 50, min trigger distance > 0.25% of price
     - Else, min trigger distance = ₹0.09
     """
     if current_price >= 50:
-        min_distance = current_price * 0.0025
+        min_distance = current_price * 0.00256
     else:
         min_distance = 0.09
 
