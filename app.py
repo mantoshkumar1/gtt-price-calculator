@@ -11,8 +11,14 @@ def calculate_gtt_prices(current_price):
     else:
         min_distance = 0.09
 
-    gtt_buy = round(current_price - min_distance, 2)
-    gtt_sell = round(current_price + min_distance, 2)
+    # GTT prices should be a multiple of 0.05
+    gtt_buy = current_price - min_distance
+    gtt_buy = round(gtt_buy/0.05) * 0.05
+    gtt_buy = round(gtt_buy, 2)
+
+    gtt_sell = current_price + min_distance
+    gtt_sell = round(gtt_sell/0.05) * 0.05
+    gtt_sell = round(gtt_sell, 2)
 
     return gtt_buy, gtt_sell
 
@@ -22,6 +28,7 @@ st.markdown("""
 **Zerodha GTT Trigger Price Rules:**  
 - For stocks priced ₹50 or more: Trigger price must be at least 0.25% away from current price.  
 - For stocks under ₹50: Trigger price must be at least ₹0.09 away.
+- GTT price should be a multiple of 0.05
 
 Use this calculator to find valid buy and sell trigger prices.
 """)
