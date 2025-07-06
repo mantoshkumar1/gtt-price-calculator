@@ -25,9 +25,30 @@ st.markdown("""
 Use this calculator to find valid buy and sell trigger prices.
 """)
 
-price = st.number_input("Enter Current Stock Price (₹):", min_value=0.01, format="%.2f")
+user_input = st.text_input("Enter Current Stock Price (₹):", placeholder="e.g. 115.50")
 
-if price:
-    buy_trigger, sell_trigger = calculate_gtt_prices(price)
-    st.success(f"✅ GTT Buy Trigger: ₹{buy_trigger}")
-    st.success(f"✅ GTT Sell Trigger: ₹{sell_trigger}")
+if user_input:
+    try:
+        price = float(user_input)
+        if price > 0:
+            buy_trigger, sell_trigger = calculate_gtt_prices(price)
+            st.success(f"✅ GTT Buy Trigger: ₹{buy_trigger}")
+            st.success(f"✅ GTT Sell Trigger: ₹{sell_trigger}")
+        else:
+            st.warning("❌Please enter a price greater than 0.")
+    except ValueError:
+        st.error("❌Invalid input. Please enter a valid number.")
+#
+# price = st.number_input(
+#     "Enter Current Stock Price (₹):",
+#     min_value=0.01,
+#     value=0.00,  # 👈 This sets the default as a float
+#     format="%.2f"
+# )
+#
+# if price:
+#     buy_trigger, sell_trigger = calculate_gtt_prices(price)
+#     st.success(f"✅ GTT Buy Trigger: ₹{buy_trigger}")
+#     st.success(f"✅ GTT Sell Trigger: ₹{sell_trigger}")
+# else:
+#     st.warning("❌GTT Stock Price")

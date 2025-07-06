@@ -1,7 +1,7 @@
 # Zerodha GTT Price Calculator
 
 A simple Streamlit app to calculate valid Good Till Triggered (GTT) buy and sell trigger prices based on Zerodha’s rules.
-
+Website: https://gtt-calculator.streamlit.app/
 ---
 
 ## Features:
