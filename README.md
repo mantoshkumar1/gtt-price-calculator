@@ -1,40 +1,59 @@
 # Zerodha GTT Price Calculator
 
-A simple Python script to calculate the minimum allowed Good Till Triggered (GTT) buy and sell trigger prices based on Zerodha’s rules.
+A simple Streamlit app to calculate valid Good Till Triggered (GTT) buy and sell trigger prices based on Zerodha’s rules.
 
-It helps set valid GTT orders avoiding “trigger price out of range” errors
+---
 
-## Why this?
+## Features:
 
-Zerodha requires GTT trigger prices to be set a minimum distance away from the current market price to avoid errors like "trigger price out of range."
+- Calculates minimum trigger prices based on Zerodha’s requirements:
+  - For stocks priced ₹50 or above, trigger price must be at least 0.25% away from current price.
+  - For stocks priced below ₹50, trigger price must be at least ₹0.09 away.
+- Interactive web app you can run locally or deploy easily.
 
-- For stocks priced **₹50 or above**, the trigger must be at least **0.25%** away from the last traded price (LTP).
-- For stocks priced **below ₹50**, the trigger must be at least **₹0.09** away from LTP.
+---
 
-This script helps you quickly calculate valid buy and sell trigger prices.
+## Installation
 
-## How to Use
+1. Clone or download this repository.
 
-1. Clone or download this repo.
-2. Run the Python script:
+2. Make sure you have Python 3.7+ installed.
+
+3. (Optional but recommended) Create and activate a virtual environment:
 
 ```bash
-python gtt_calculator.py
+python -m venv venv
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate     # Windows
 ````
 
-3. When prompted, enter the current stock price (positive number).
-4. The script will display the recommended GTT buy and sell trigger prices.
+4. Install dependencies:
 
-## Example
-
-```
-Enter Current Stock Price (₹): 120
-
-📌 Based on Zerodha GTT rules:
-✅ GTT Buy Trigger  : ₹119.7
-✅ GTT Sell Trigger : ₹120.3
+```bash
+pip install -r requirements.txt
 ```
 
-## License
+---
 
-MIT License
+## Running the App Locally
+
+Run this command in your terminal:
+
+```bash
+streamlit run app.py
+```
+
+Your default browser should open the app. If not, visit `http://localhost:8501`.
+
+---
+
+## Usage
+
+* Enter the current stock price in the input box.
+* The app will show you the minimum valid GTT buy and sell trigger prices according to Zerodha’s rules.
+
+---
+
+## Deploying Online
+
+You can easily deploy this app on [Streamlit Cloud](https://share.streamlit.io) by connecting your GitHub repo.
