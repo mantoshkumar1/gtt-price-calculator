@@ -20,8 +20,9 @@ st.title("Zerodha GTT Price Calculator")
 
 st.markdown("""
 **Zerodha GTT Trigger Price Rules:**  
-- For stocks priced ₹50 or more: Trigger price must be at least 0.25% away from current price  
-- For stocks under ₹50: Trigger price must be at least ₹0.09 away  
+- For stocks priced ₹50 or more: Trigger price must be at least 0.25% away from current price.  
+- For stocks under ₹50: Trigger price must be at least ₹0.09 away.
+
 Use this calculator to find valid buy and sell trigger prices.
 """)
 
