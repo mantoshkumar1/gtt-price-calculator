@@ -4,7 +4,7 @@ A simple Streamlit app to calculate valid Good Till Triggered (GTT) buy and sell
 
 Website: https://gtt-calculator.streamlit.app/
 
-**Note:** Any change to this codebase is automatically reflected on **streamlit.app** 
+**Note:** Any change to this codebase is automatically reflected on the above **streamlit.app** 
 
 ---
 
