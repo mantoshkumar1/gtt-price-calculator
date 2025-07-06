@@ -35,20 +35,6 @@ if user_input:
             st.success(f"✅ GTT Buy Trigger: ₹{buy_trigger}")
             st.success(f"✅ GTT Sell Trigger: ₹{sell_trigger}")
         else:
-            st.warning("❌Please enter a price greater than 0.")
+            st.warning("❌ Please enter a price greater than 0.")
     except ValueError:
-        st.error("❌Invalid input. Please enter a valid number.")
-#
-# price = st.number_input(
-#     "Enter Current Stock Price (₹):",
-#     min_value=0.01,
-#     value=0.00,  # 👈 This sets the default as a float
-#     format="%.2f"
-# )
-#
-# if price:
-#     buy_trigger, sell_trigger = calculate_gtt_prices(price)
-#     st.success(f"✅ GTT Buy Trigger: ₹{buy_trigger}")
-#     st.success(f"✅ GTT Sell Trigger: ₹{sell_trigger}")
-# else:
-#     st.warning("❌GTT Stock Price")
+        st.error("❌ Invalid input. Please enter a valid number.")
