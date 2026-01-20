@@ -1,10 +1,11 @@
 # Zerodha GTT Price Calculator
 
 A simple Streamlit app to calculate valid Good Till Triggered (GTT) buy and sell trigger prices based on Zerodha’s rules.
+You can also optionally enter the number of shares or total amount to see your order size calculated automatically, and choose how trigger prices are rounded.
 
 Website: https://gtt-calculator.streamlit.app/
 
-**Note:** Any change to this codebase is automatically reflected on the above **streamlit.app** 
+**Note:** Any change to this codebase is automatically reflected on the above **streamlit.app**
 
 ---
 
@@ -13,6 +14,8 @@ Website: https://gtt-calculator.streamlit.app/
 - Calculates minimum trigger prices based on Zerodha’s requirements:
   - For stocks priced ₹50 or above, trigger price must be at least 0.25% away from current price.
   - For stocks priced below ₹50, trigger price must be at least ₹0.09 away.
+- Allows optional calculation of Buy/Sell order sizes by entering number of shares or total amount. 
+- Trigger prices can be rounded to a nearest multiple you choose for convenience.
 - Interactive web app you can run locally or deploy easily.
 
 ---
