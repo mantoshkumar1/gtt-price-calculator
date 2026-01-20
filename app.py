@@ -12,6 +12,12 @@ def calculate_gtt_prices(current_price, rounding_multiple):
     @param rounding_multiple: Rounding multiple for GTT prices (Rounding Multiple is the granularity at which the GTT price must be placed)
     @return: Tuple of (gtt_buy_price, gtt_sell_price, warning_message)
     """
+    if rounding_multiple <= 0: # Handle zero or invalid rounding multiple gracefully
+        gtt_buy_price = round(current_price, 2)
+        gtt_sell_price = round(current_price, 2)
+        warning_message = "⚡ Using exact price. You can enter shares/amount freely to buy/sell Now. To set GTT triggers, adjust rounding multiple."
+        return gtt_buy_price, gtt_sell_price, warning_message
+
     if current_price >= 50:
         min_distance = current_price * 0.00256
     else:
@@ -20,12 +26,6 @@ def calculate_gtt_prices(current_price, rounding_multiple):
     # GTT prices should be a multiple of "rounding_multiple"
     gtt_buy_price = current_price - min_distance
     gtt_sell_price = current_price + min_distance
-
-    if rounding_multiple <= 0: # Handle zero or invalid rounding multiple gracefully
-        gtt_buy_price = round(gtt_buy_price, 2)
-        gtt_sell_price = round(gtt_sell_price, 2)
-        warning_message = "⚠️ Trigger prices are not rounded. Use a value like 0.05 for valid prices."
-        return gtt_buy_price, gtt_sell_price, warning_message
 
     gtt_buy_price = round(gtt_buy_price/rounding_multiple) * rounding_multiple
     gtt_buy_price = round(gtt_buy_price, 2)
@@ -54,21 +54,25 @@ for k, v in defaults.items():
 
 def buy_shares_changed(buy_trigger):
     st.session_state.buy_last_edited = "shares"
+    st.session_state.buy_amount = 0.0
     if st.session_state.buy_shares > 0:
         st.session_state.buy_amount = math.floor(st.session_state.buy_shares * buy_trigger * 100)/100
 
 def buy_amount_changed(buy_trigger):
     st.session_state.buy_last_edited = "amount"
+    st.session_state.buy_shares = 0
     if st.session_state.buy_amount > 0:
         st.session_state.buy_shares = math.floor(st.session_state.buy_amount / buy_trigger)
 
 def sell_shares_changed(sell_trigger):
     st.session_state.sell_last_edited = "shares"
+    st.session_state.sell_amount = 0.0
     if st.session_state.sell_shares > 0:
         st.session_state.sell_amount = math.floor(st.session_state.sell_shares * sell_trigger * 100)/100
 
 def sell_amount_changed(sell_trigger):
     st.session_state.sell_last_edited = "amount"
+    st.session_state.sell_shares = 0
     if st.session_state.sell_amount > 0:
         st.session_state.sell_shares = math.floor(st.session_state.sell_amount / sell_trigger)
 
@@ -102,13 +106,12 @@ if user_input:
             st.stop()
 
         buy_trigger, sell_trigger, rounding_note = calculate_gtt_prices(price, rounding_multiple)
-        if rounding_note:
-            st.warning(rounding_note)
-            st.stop()
 
         # ------------------ BUY ORDER ------------------
-        st.success(f"✅ GTT Buy Trigger: ₹{buy_trigger}")
-        default_num_buy_shares = 1
+        if rounding_note:
+            st.info(rounding_note)
+        else:
+            st.success(f"✅ GTT Buy Trigger: ₹{buy_trigger}")
 
         # Create two columns, 50% each
         col1, col2 = st.columns(2)
@@ -116,8 +119,8 @@ if user_input:
         with col1:
             st.number_input(
                 "Buy Amount (₹)",
-                min_value=default_num_buy_shares * buy_trigger,
-                step=10000.0,
+                min_value=0.0,
+                step=1000.0,
                 format="%.2f",
                 key="buy_amount",
                 on_change=partial(buy_amount_changed, buy_trigger)
@@ -126,15 +129,15 @@ if user_input:
         with col2:
             st.number_input(
                 "Buy Shares",
-                min_value=default_num_buy_shares,
-                step=100,
+                min_value=0,
+                step=10,
                 key="buy_shares",
                 on_change=partial(buy_shares_changed, buy_trigger)
             )
 
         # ------------------ SELL ORDER ------------------
-        st.success(f"✅ GTT Sell Trigger: ₹{sell_trigger}")
-        default_num_sell_shares = 1
+        if not rounding_note:
+            st.success(f"✅ GTT Sell Trigger: ₹{sell_trigger}")
 
         # Create two columns, 50% each
         col1, col2 = st.columns(2)
@@ -142,8 +145,8 @@ if user_input:
         with col1:
             st.number_input(
                 "Sell Amount (₹)",
-                min_value=sell_trigger * default_num_sell_shares,
-                step=10000.0,
+                min_value=0.0,
+                step=1000.0,
                 format="%.2f",
                 key="sell_amount",
                 on_change=partial(sell_amount_changed, sell_trigger)
@@ -152,8 +155,8 @@ if user_input:
         with col2:
             st.number_input(
                 "Sell Shares",
-                min_value=default_num_sell_shares,
-                step=100,
+                min_value=0,
+                step=10,
                 key="sell_shares",
                 on_change=partial(sell_shares_changed, sell_trigger)
             )
